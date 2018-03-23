@@ -6,8 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Survey</title>
-    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <style>
+        .Imager {
+            width: 300px;
+            text-align: center;
+
+        }
+        #myModalLabel {
+            text-align: center;
+        }
+    </style>
 </head>
 
 <body>
@@ -236,7 +245,33 @@
                     integrity = "sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
                     crossorigin = "anonymous"
                 </script>
+
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h4 class="modal-title" id="myModalLabel">Your Match</h4>
+                            </div>
+                            <div class="modal-body" id="modal-center">
+                                ...
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
 </body>
+<script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+    crossorigin="anonymous"></script>
+
+
+
 
 </html>
 
@@ -244,7 +279,7 @@
     $("#button1").on("click", function (event) {
         event.preventDefault();
 
-        // Here we grab the form elements
+
         const newFriend = {
             Name: $("#name").val().trim(),
             imageLink: $("#image").val().trim(),
@@ -260,36 +295,40 @@
                 parseInt($("#sel10").val().trim())
             ]
 
-
+               
         };
-
-        console.log(Object.values(newFriend));
-
+             
 
 
-        // This line is the magic. It"s very similar to the standard ajax function we used.
-        // Essentially we give it a URL, we give it the object we want to send, then we have a "callback".
-        // The callback is the response of the server. In our case, we set up code in api-routes that "returns" true or false
-        // depending on if a tables is available or not.
+
+
+
 
         $.ajax({
             type: "POST",
             url: "/api/friends",
-            // The key needs to match your method's input parameter (case-sensitive).
+
             data: JSON.stringify(
                 newFriend
             ),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (data) {
-                alert(data);
+                console.log(data);
+                $('#myModal').modal('show')
+                var image = $('<img class="Imager">');
+                var name = $("<h1>");
+                image.attr("src", data.image);
+                name.html(data.name);
+                $("#modal-center").empty();
+                $("#modal-center").append(name);
+                $("#modal-center").append(image);
+
             },
             failure: function (errMsg) {
-                alert(errMsg);
+                console.log(errMsg);
             }
         });
 
     });
 </script>
-
-//I want to compute to the database after I submit
