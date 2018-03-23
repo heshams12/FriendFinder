@@ -26,7 +26,7 @@ module.exports = function (app) {
 
       var sumDiff = 0;
       for (var j = 0; j < friendScores.length; j++) {
-        sumDiff += (Math.abs(Friends[i].scores[j]) - (friendScores[j]));
+        sumDiff += Math.abs((Friends[i].scores[j]) - (friendScores[j]));
 
 
       }
@@ -43,6 +43,8 @@ module.exports = function (app) {
         leastSum = sumDiff;
         
         console.log(matchName);
+        console.log(leastSum);
+        console.log(matchImage);
 
 
 
